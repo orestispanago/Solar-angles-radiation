@@ -26,6 +26,5 @@ def calc_solar_angles(df):
 sol = read_raw('raw/solar_2016.txt')    
 sol = calc_solar_angles(sol)
 sol['DNI']= (sol["GHI"] - sol["DHI"])/np.cos(np.deg2rad(sol['zen']))
-sol = sol.loc[sol['DNI']>0]
 sol.to_csv("solar.csv")
 # solar_noons = sol.loc[sol.groupby(sol.index.date)["zen"].idxmin()]
