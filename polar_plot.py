@@ -6,8 +6,8 @@ import seaborn as sns
 sns.set_theme()
 
 
-df = pd.read_csv("solar.csv", parse_dates=True, index_col='t')
-
+df = pd.read_csv("solar_all.csv", parse_dates=True, index_col='t')
+# df = df.loc[(df["az"]>90) & (df["az"]<270)]
 
 df["az"].plot.hist()
 df["zen"].plot.hist()
@@ -31,7 +31,7 @@ A, R = np.meshgrid(abins, rbins)
 fig, ax = plt.subplots(subplot_kw=dict(projection="polar"), figsize=(7, 7))
 
 pc = ax.pcolormesh(A, R, hist2.T, cmap="jet")
-ax.set_theta_zero_location("N")
+ax.set_theta_zero_location("S")
 fig.colorbar(pc)
 plt.grid()
 plt.show()
