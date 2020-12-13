@@ -9,6 +9,10 @@ sns.set_theme()
 df = pd.read_csv("solar.csv", parse_dates=True, index_col='t')
 
 
+df["az"].plot.hist()
+df["zen"].plot.hist()
+
+
 df[['az', 'zen']] = df[['az', 'zen']].apply(np.radians)
 
 rbins = np.linspace(0, df["zen"].max(), 50)
@@ -20,12 +24,14 @@ abins = np.linspace(0, 2*np.pi, 60)
 hist, _, _ = np.histogram2d(df["az"], df["zen"], bins=(abins, rbins), weights=df["GHI"])
 hist2, _, _ = np.histogram2d(df["az"], df["zen"], bins=(abins, rbins))
 # hist, _, _ = np.histogram2d(df["az"], df["zen"], density=True, weights=df["GHI"], bins=(abins, rbins))
+# hist[hist == 0] = np.nan # or use np.nan
 avg_hist = hist / hist2
 A, R = np.meshgrid(abins, rbins)
 
 fig, ax = plt.subplots(subplot_kw=dict(projection="polar"), figsize=(7, 7))
 
-pc = ax.pcolormesh(A, R, avg_hist.T, cmap="jet")
+pc = ax.pcolormesh(A, R, hist2.T, cmap="jet")
+ax.set_theta_zero_location("N")
 fig.colorbar(pc)
 plt.grid()
 plt.show()
